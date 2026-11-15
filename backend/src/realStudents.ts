@@ -8,7 +8,7 @@ import './transport/schema.js';
 import './hr/schema.js';
 import { analyze, commit } from './import/importer.js';
 import { toCsv } from './import/csv.js';
-import { REAL_STUDENTS } from './data/realStudents.js';
+import { REAL_STUDENTS } from './realStudentsList.js';
 
 /** The real KMCB students (classes XI and XII, session 2026-27) as an import file. */
 export function realStudentsCsv(): string {
