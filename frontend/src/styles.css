@@ -1,0 +1,227 @@
+@import "@fontsource/plus-jakarta-sans/300.css";
+@import "@fontsource/plus-jakarta-sans/400.css";
+@import "@fontsource/plus-jakarta-sans/500.css";
+@import "@fontsource/plus-jakarta-sans/600.css";
+@import "@fontsource/plus-jakarta-sans/700.css";
+@import "@fontsource/plus-jakarta-sans/800.css";
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Design tokens copied from the reference project (KIT LMS) */
+@theme {
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --color-brand-dark: #020617;
+  --color-brand-slate: #0f172a;
+  --shadow-enterprise: 0 25px 50px -12px rgba(0, 0, 0, 0.1), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+  --shadow-enterprise-lg: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+  --shadow-indigo-glow: 0 0 30px rgba(99, 102, 241, 0.3);
+  --animate-float: float 6s ease-in-out infinite;
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+  }
+}
+
+html, body { height: 100%; }
+body {
+  letter-spacing: -0.01em;
+  word-spacing: 0.12em;
+  overflow-x: hidden;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-sans);
+  background: #020617;
+  color: #f1f5f9;
+}
+::selection { background: rgba(99, 102, 241, 0.25); }
+
+.quantum-mesh {
+  position: fixed; inset: 0; z-index: 0; background: #020617; overflow: hidden;
+}
+.quantum-mesh::before {
+  content: ''; position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+  background:
+    radial-gradient(circle at center, #1e1b4b 0%, #020617 40%),
+    radial-gradient(circle at 20% 30%, #4338ca 0%, transparent 30%),
+    radial-gradient(circle at 80% 70%, #1d4ed8 0%, transparent 30%),
+    radial-gradient(circle at 10% 80%, #064e3b 0%, transparent 20%);
+  animation: mesh-flow 25s ease-in-out infinite alternate;
+  filter: blur(80px); opacity: 0.6;
+}
+@keyframes mesh-flow {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(8deg) scale(1.1); }
+  100% { transform: rotate(-8deg) scale(0.95); }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(25px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.dark .glass-card { background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.05); }
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(99, 102, 241, 0.2); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(99, 102, 241, 0.4); }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Shared form + button looks (same shapes as reference) */
+.field {
+  width: 100%; border-radius: 1rem; padding: 0.9rem 1.25rem; font-size: 0.875rem; font-weight: 700; outline: none;
+  background: #f8fafc; border: 1px solid #e2e8f0; color: #0f172a; transition: box-shadow .2s;
+}
+.field:focus { box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15); }
+.dark .field { background: rgba(2, 6, 23, 0.5); border-color: #1e293b; color: #fff; }
+.label { display: block; margin: 0 0 .4rem 1rem; font-size: 10px; font-weight: 900; letter-spacing: .15em; text-transform: uppercase; color: #64748b; }
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6rem; border-radius: 1.5rem;
+  background: #4f46e5; color: #fff; font-weight: 900; font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
+  padding: 1rem 1.75rem; box-shadow: 0 10px 25px -8px rgba(79, 70, 229, .6); transition: background .2s, transform .1s;
+}
+.btn-primary:hover { background: #4338ca; }
+.btn-primary:active { transform: scale(.97); }
+.btn-primary:disabled { opacity: .5; pointer-events: none; }
+.btn-ghost {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: 1.5rem;
+  font-weight: 800; font-size: 11px; letter-spacing: .15em; text-transform: uppercase; padding: 1rem 1.5rem;
+  background: #f1f5f9; color: #475569; transition: background .2s;
+}
+.btn-ghost:hover { background: #e2e8f0; }
+.dark .btn-ghost { background: #1e293b; color: #cbd5e1; }
+.dark .btn-ghost:hover { background: #334155; }
+
+@media (prefers-reduced-motion: reduce) {
+  .quantum-mesh::before, .animate-float { animation: none; }
+}
+
+/* ======================================================================
+   Motion layer. Pure CSS, no logic. Everything is switched off for people who
+   ask for reduced motion, and while printing.
+   ====================================================================== */
+:root {
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+@keyframes page-in   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes rise-in   { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes fade-in   { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pop-in    { from { opacity: 0; transform: translateY(12px) scale(.94); } to { opacity: 1; transform: none; } }
+@keyframes slide-right { from { opacity: 0; transform: translateX(-14px); } to { opacity: 1; transform: none; } }
+@keyframes toast-in  { from { opacity: 0; transform: translateY(24px) scale(.92); } to { opacity: 1; transform: none; } }
+@keyframes sheen     { from { transform: translateX(-120%) skewX(-20deg); } to { transform: translateX(260%) skewX(-20deg); } }
+@keyframes shimmer   { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+@keyframes ring-pulse { 0% { box-shadow: 0 0 0 0 rgba(99,102,241,.45); } 100% { box-shadow: 0 0 0 14px rgba(99,102,241,0); } }
+@keyframes bar-grow  { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes spin-in   { from { opacity: 0; transform: rotate(-90deg) scale(.5); } to { opacity: 1; transform: none; } }
+
+/* Every routed page (also pages inside a section such as Fee or Timetable) eases in, and its blocks follow one after the other. */
+router-outlet + * { display: block; animation: page-in .55s var(--ease-out) both; }
+router-outlet + * > div > * { animation: rise-in .6s var(--ease-out) both; }
+router-outlet + * > div > *:nth-child(1) { animation-delay: .02s; }
+router-outlet + * > div > *:nth-child(2) { animation-delay: .07s; }
+router-outlet + * > div > *:nth-child(3) { animation-delay: .12s; }
+router-outlet + * > div > *:nth-child(4) { animation-delay: .17s; }
+router-outlet + * > div > *:nth-child(5) { animation-delay: .22s; }
+router-outlet + * > div > *:nth-child(6) { animation-delay: .27s; }
+router-outlet + * > div > *:nth-child(n+7) { animation-delay: .32s; }
+
+/* Sidebar */
+aside nav a { position: relative; transition: background-color .25s, color .25s, transform .3s var(--ease-out), box-shadow .3s; }
+aside nav a:hover { transform: translateX(4px); }
+aside nav a:active { transform: translateX(2px) scale(.98); }
+aside nav a lucide-icon { transition: transform .35s var(--ease-spring); }
+aside nav a:hover lucide-icon { transform: scale(1.18) rotate(-6deg); }
+aside nav a.\!bg-indigo-600::before { content: ''; position: absolute; left: -.55rem; top: 22%; bottom: 22%; width: 4px; border-radius: 4px; background: #818cf8; animation: bar-grow .4s var(--ease-out) both; transform-origin: top; }
+aside nav > div { animation: slide-right .5s var(--ease-out) both; }
+aside nav > div:nth-child(2) { animation-delay: .06s; } aside nav > div:nth-child(3) { animation-delay: .12s; }
+aside nav > div:nth-child(4) { animation-delay: .18s; } aside nav > div:nth-child(n+5) { animation-delay: .24s; }
+aside { transition: transform .45s var(--ease-out); }
+
+/* Header, theme button, avatar */
+header { transition: background-color .4s, border-color .4s; }
+header h2 { animation: rise-in .5s var(--ease-out) both; }
+header button:hover lucide-icon { animation: spin-in .5s var(--ease-spring); }
+
+/* Buttons: spring on press, a light sweep across the main one */
+.btn-primary, .btn-ghost { position: relative; overflow: hidden; transition: background-color .25s, transform .25s var(--ease-spring), box-shadow .3s, color .25s; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 30px -10px rgba(79,70,229,.65); }
+.btn-ghost:hover { transform: translateY(-1px); }
+.btn-primary:active, .btn-ghost:active { transform: scale(.96); transition-duration: .08s; }
+.btn-primary::after { content: ''; position: absolute; top: 0; bottom: 0; left: 0; width: 40%; background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent); transform: translateX(-120%) skewX(-20deg); pointer-events: none; }
+.btn-primary:hover::after { animation: sheen .8s var(--ease-out); }
+.btn-primary:focus-visible, .btn-ghost:focus-visible, aside a:focus-visible { outline: 3px solid rgba(99,102,241,.55); outline-offset: 2px; }
+
+/* Inputs */
+.field { transition: box-shadow .3s var(--ease-out), border-color .25s, background-color .25s, transform .25s var(--ease-out); }
+.field:hover { border-color: #a5b4fc; }
+.field:focus { border-color: #6366f1; transform: translateY(-1px); }
+.label { transition: color .2s; }
+div:focus-within > .label { color: #6366f1; }
+input[type='checkbox'], input[type='radio'] { transition: transform .2s var(--ease-spring); }
+input[type='checkbox']:active, input[type='radio']:active { transform: scale(.8); }
+
+/* Cards and panels: a gentle lift on hover for the big rounded blocks */
+[class*='rounded-[2'][class*='border'], [class*='rounded-[2.5rem]'] { transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out), border-color .3s; }
+a[class*='rounded-[2'][class*='border']:hover, button[class*='rounded-[2'][class*='border']:hover { transform: translateY(-4px); box-shadow: 0 24px 40px -18px rgba(79,70,229,.35); border-color: rgba(99,102,241,.45); }
+
+/* Tables: rows fade in one after another, and light up under the pointer */
+tbody tr { transition: background-color .2s; animation: fade-in .45s var(--ease-out) both; }
+tbody tr:nth-child(1) { animation-delay: .02s; } tbody tr:nth-child(2) { animation-delay: .05s; } tbody tr:nth-child(3) { animation-delay: .08s; }
+tbody tr:nth-child(4) { animation-delay: .11s; } tbody tr:nth-child(5) { animation-delay: .14s; } tbody tr:nth-child(6) { animation-delay: .17s; }
+tbody tr:nth-child(7) { animation-delay: .2s; } tbody tr:nth-child(8) { animation-delay: .23s; } tbody tr:nth-child(n+9) { animation-delay: .26s; }
+tbody tr:hover { background-color: rgba(99,102,241,.06); }
+.dark tbody tr:hover { background-color: rgba(129,140,248,.09); }
+
+/* Dialogs and pop-overs: dim layer fades, the panel springs up */
+.fixed.inset-0 { animation: fade-in .25s ease both; }
+.fixed.inset-0 > div { animation: pop-in .4s var(--ease-spring) both; }
+
+/* Toast */
+[role='status'].fixed { animation: toast-in .45s var(--ease-spring) both; }
+
+/* Tabs / pills (anything that is a row of rounded buttons or links) press nicely */
+nav[aria-label] a, [role='tablist'] button { transition: background-color .25s, color .25s, transform .25s var(--ease-spring), box-shadow .3s; }
+nav[aria-label] a:hover, [role='tablist'] button:hover { transform: translateY(-2px); }
+nav[aria-label] a:active, [role='tablist'] button:active { transform: scale(.96); }
+
+/* Progress and fairness bars grow in */
+[class*='rounded-full'][style*='width'], [class*='rounded-full'] > [style*='width'] { transform-origin: left; animation: bar-grow .9s var(--ease-out) both; }
+
+/* Utilities that pages can opt into */
+.skeleton { background: linear-gradient(90deg, rgba(148,163,184,.12) 25%, rgba(148,163,184,.28) 50%, rgba(148,163,184,.12) 75%); background-size: 200% 100%; animation: shimmer 1.4s linear infinite; border-radius: 1rem; }
+.pulse-ring { animation: ring-pulse 1.8s ease-out infinite; }
+.lift { transition: transform .35s var(--ease-out), box-shadow .35s; } .lift:hover { transform: translateY(-4px); }
+
+/* Login page: the card floats in, the brand block follows */
+.quantum-mesh + div > div > * { animation: rise-in .8s var(--ease-out) both; }
+.quantum-mesh + div > div > *:nth-child(2) { animation-delay: .15s; }
+
+/* Theme switch: a circle of the new theme grows from the button (browsers with View Transitions) */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+::view-transition-new(root) { animation: theme-reveal .7s var(--ease-out) both; clip-path: circle(0 at var(--tx, 100%) var(--ty, 0%)); }
+@keyframes theme-reveal { to { clip-path: circle(150vmax at var(--tx, 100%) var(--ty, 0%)); } }
+html { transition: background-color .4s; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .001ms !important; animation-delay: 0s !important; animation-iteration-count: 1 !important; transition-duration: .001ms !important; scroll-behavior: auto !important; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+@media print { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+/* Timetable cells: colour comes from --h (hue) set per subject */
+.tt-cell { background: hsl(var(--h) 85% 92%); color: hsl(var(--h) 60% 22%); }
+.dark .tt-cell { background: hsl(var(--h) 35% 22%); color: hsl(var(--h) 80% 86%); }
+
+/* Printing: A4 landscape, only the .print-area is printed */
+@page { size: A4 landscape; margin: 6mm; }
+@media print {
+  aside, header, .no-print, [role='status'] { display: none !important; }
+  html, body, .h-screen, .w-screen, main, .overflow-y-auto, .overflow-hidden { height: auto !important; overflow: visible !important; }
+  main { padding: 0 !important; }
+  .h-screen { background: #fff !important; }
+  body, .print-area { background: #fff !important; color: #000 !important; }
+  .print-area { border: 0 !important; box-shadow: none !important; padding: 0 !important; border-radius: 0 !important; }
+  .print-area .tt-cell { background: #f1f5f9 !important; color: #000 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

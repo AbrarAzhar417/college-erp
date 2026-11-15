@@ -1,0 +1,26 @@
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+
+@Component({
+  selector: 'app-tr-shell',
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  template: `
+  <div class="max-w-7xl mx-auto pb-16 print:pb-0 space-y-8">
+    <div class="no-print space-y-8">
+      <div><h2 class="text-3xl font-black tracking-tighter">Transport</h2>
+        <p class="text-sm font-bold text-slate-400 mt-2">Buses, routes, stops and the students on each bus. The transport fee goes on the monthly fee voucher by itself.</p></div>
+      <nav class="flex gap-2 overflow-x-auto no-scrollbar" aria-label="Transport sections">
+        @for (t of tabs; track t.link) {
+          <a [routerLink]="t.link" routerLinkActive="!bg-indigo-600 !text-white shadow-lg shadow-indigo-600/30" [routerLinkActiveOptions]="{ exact: true }"
+             class="shrink-0 px-5 py-3 rounded-2xl text-xs font-black uppercase tracking-widest bg-white dark:bg-slate-900/40 border border-slate-200 dark:border-slate-800 text-slate-500 hover:text-indigo-500 transition-all">{{ t.label }}</a>
+        }
+      </nav>
+    </div>
+    <router-outlet />
+  </div>
+  `
+})
+export class TrShell {
+  tabs = [{ link: '/transport', label: 'Overview' }, { link: '/transport/routes', label: 'Routes' }, { link: '/transport/students', label: 'Students on buses' }, { link: '/transport/vehicles', label: 'Buses' },
+    { link: '/transport/staff', label: 'Drivers' }, { link: '/transport/boarding', label: 'Bus attendance' }, { link: '/transport/reports', label: 'Reports' }];
+}
